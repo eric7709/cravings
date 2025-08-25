@@ -5,11 +5,15 @@ import { useMenuItemDataStore } from "@/modules/MenuItems/store/useMenuItemsData
 import MenuItemCard from "./MenuItemCard";
 
 export default function MenuItemList() {
-  const { menuItems } = useMenuItemDataStore();
-  const { searchTerm, selectedCategory, filterMenuItems } = useOrderSelectionStore();
+  const { menuItems, isLoading } = useMenuItemDataStore();
+  const { searchTerm, selectedCategory, filterMenuItems } =
+    useOrderSelectionStore();
+
   const filteredItems = useMemo(() => {
     return filterMenuItems(menuItems);
   }, [menuItems, searchTerm, selectedCategory, filterMenuItems]);
+
+ 
   return (
     <div className="flex-1 p-4 flex flex-col overflow-y-auto">
       <div className="flex flex-col gap-5">
