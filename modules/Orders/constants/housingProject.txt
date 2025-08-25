@@ -1,0 +1,181 @@
+-- 1. User
+CREATE TABLE users (
+  id UUID PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  phone VARCHAR(20),
+  wallet_address VARCHAR(42),
+  roles VARCHAR(50)[] NOT NULL, -- Array for multi-role (buyer, owner, agent, inspector, admin)
+  kyc_status VARCHAR(20) CHECK (kyc_status IN ('pending', 'verified', 'rejected')),
+  account_status VARCHAR(20) CHECK (account_status IN ('active', 'suspended', 'banned')),
+  reputation_score INTEGER DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. Property
+CREATE TABLE properties (
+  id UUID PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  description TEXT,
+  type VARCHAR(20) CHECK (type IN ('sale', 'rent')),
+  quit_duration text(),
+  price DECIMAL(15, 2) NOT NULL,
+  location VARCHAR(255) NOT NULL,
+  owner_id UUID NOT NULL REFERENCES users(id),
+  status VARCHAR(20) CHECK (status IN ('available', 'reserved', 'sold', 'rented')),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 3. PropertyAgent (Many-to-Many Join Table)
+CREATE TABLE property_agents (
+  id UUID PRIMARY KEY,
+  property_id UUID NOT NULL REFERENCES properties(id),
+  agent_id UUID NOT NULL REFERENCES users(id),
+  commission_type VARCHAR(20) CHECK (commission_type IN ('flat', 'percentage')),
+  commission_value DECIMAL(10, 2) NOT NULL,
+  status VARCHAR(20) CHECK (status IN ('active', 'removed', 'expired')),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT unique_property_agent UNIQUE (property_id, agent_id)
+);
+
+-- 4. PropertyImage
+CREATE TABLE property_images (
+  id UUID PRIMARY KEY,
+  property_id UUID NOT NULL REFERENCES properties(id),
+  url VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 5. Inspection
+CREATE TABLE inspections (
+  id UUID PRIMARY KEY,
+  property_id UUID NOT NULL REFERENCES properties(id),
+  owner_id UUID NOT NULL REFERENCES users(id),
+  buyer_id UUID REFERENCES users(id),
+  inspector_id UUID REFERENCES users(id),
+  report_url VARCHAR(255),
+  status VARCHAR(20) CHECK (status IN ('pending', 'completed', 'failed', 'cancelled')),
+  scheduled_at TIMESTAMP WITH TIME ZONE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 6. Agreement
+CREATE TABLE agreements (
+  id UUID PRIMARY KEY,
+  property_id UUID NOT NULL REFERENCES properties(id),
+  owner_id UUID NOT NULL REFERENCES users(id),
+  buyer_id UUID REFERENCES users(id),
+  agreement_hash VARCHAR(255),
+  signed_at TIMESTAMP WITH TIME ZONE,
+  status VARCHAR(20) CHECK (status IN ('draft', 'signed', 'cancelled')),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 7. Escrow
+CREATE TABLE escrows (
+  id UUID PRIMARY KEY,
+  deal_id VARCHAR(255) NOT NULL, -- On-chain ID
+  property_id UUID NOT NULL REFERENCES properties(id),
+  owner_id UUID NOT NULL REFERENCES users(id),
+  buyer_id UUID REFERENCES users(id),
+  amount DECIMAL(15, 2) NOT NULL,
+  status VARCHAR(20) CHECK (status IN ('funded', 'inspection', 'agreement_signed', 'cooling_off', 'released', 'refunded', 'disputed', 'cancelled')),
+  inspection_deadline TIMESTAMP WITH TIME ZONE,
+  release_after TIMESTAMP WITH TIME ZONE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 8. EscrowPayout
+CREATE TABLE escrow_payouts (
+  id UUID PRIMARY KEY,
+  escrow_id UUID NOT NULL REFERENCES escrows(id),
+  recipient_id UUID NOT NULL REFERENCES users(id),
+  amount DECIMAL(15, 2) NOT NULL,
+  role VARCHAR(20) CHECK (role IN ('owner', 'agent')),
+  status VARCHAR(20) CHECK (status IN ('pending', 'paid')),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 9. Dispute
+CREATE TABLE disputes (
+  id UUID PRIMARY KEY,
+  escrow_id UUID NOT NULL REFERENCES escrows(id),
+  owner_id UUID NOT NULL REFERENCES users(id),
+  buyer_id UUID REFERENCES users(id),
+  opened_by UUID NOT NULL REFERENCES users(id),
+  reason TEXT,
+  evidence_urls TEXT[],
+  status VARCHAR(20) CHECK (status IN ('open', 'resolved_buyer', 'resolved_owner', 'cancelled')),
+  resolved_by UUID REFERENCES users(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 10. TransactionLog
+CREATE TABLE transaction_logs (
+  id UUID PRIMARY KEY,
+  escrow_id UUID NOT NULL REFERENCES escrows(id),
+  tx_hash VARCHAR(66),
+  action VARCHAR(20) CHECK (action IN ('deposit', 'release', 'refund', 'dispute', 'fee')),
+  amount DECIMAL(15, 2),
+  timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 11. FeeRecord
+CREATE TABLE fee_records (
+  id UUID PRIMARY KEY,
+  escrow_id UUID NOT NULL REFERENCES escrows(id),
+  platform_fee DECIMAL(15, 2),
+  inspector_fee DECIMAL(15, 2),
+  gas_fee DECIMAL(15, 2),
+  paid_to UUID REFERENCES users(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- On-Chain Smart Contract (Deal) - Solidity Example
+-- This is not SQL, but a reference for the smart contract structure
+contract Deal {
+  uint256 public dealId;
+  address public buyer;
+  address public owner;
+  address[] public agents;
+  struct CommissionRule {
+    string commissionType; // "flat" or "percentage"
+    uint256 commissionValue; // e.g., 5 for 5% or 200 for 200 USD
+  }
+  CommissionRule[] public commissionRules;
+  uint256 public amount;
+  bytes32 public agreementHash;
+  bytes32 public reportHash;
+  uint256 public inspectionDeadline;
+  uint256 public releaseAfter;
+  string public status;
+  constructor(
+    uint256 _dealId,
+    address _buyer,
+    address _owner,
+    address[] memory _agents,
+    CommissionRule[] memory _commissionRules,
+    uint256 _amount,
+    bytes32 _agreementHash,
+    bytes32 _reportHash,
+    uint256 _inspectionDeadline,
+    uint256 _releaseAfter,
+    string memory _status
+  ) {
+    dealId = _dealId;
+    buyer = _buyer;
+    owner = _owner;
+    agents = _agents;
+    commissionRules = _commissionRules;
+    amount = _amount;
+    agreementHash = _agreementHash;
+    reportHash = _reportHash;
+    inspectionDeadline = _inspectionDeadline;
+    releaseAfter = _releaseAfter;
+    status = _status;
+  }
+}
