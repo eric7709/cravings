@@ -33,7 +33,7 @@ export default function CashierOrderCardHeader(order: Order) {
   
   return (
     <>
-      <header className={`flex items-center justify-between p-4 pb-2 border-b ${headerBg[order.status as keyof typeof headerBg]} border-gray-100 bg-emerald-50`}>
+      <header className={`flex items-center justify-between p-4 pb-2 border-b ${headerBg[order.status as keyof typeof headerBg]} border-gray-100 `}>
         <div className="flex items-center gap-3">
           <div
             className={`flex-shrink-0 px-3 py-2 rounded-lg font-semibold text-lg text-white ${getStyle(order.status).bg} shadow-sm`}
