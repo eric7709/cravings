@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Main Circle (Plate) -->
+  <circle cx="50" cy="50" r="45" stroke="#3b82f6" stroke-width="6" fill="none"></circle>
+  
+  <!-- Fork -->
+  <g transform="translate(25, 30)" fill="#3b82f6">
+    <rect x="0" y="0" width="3" height="25" rx="1"></rect>
+    <rect x="5" y="0" width="3" height="20" rx="1"></rect>
+    <rect x="10" y="0" width="3" height="25" rx="1"></rect>
+    <rect x="15" y="0" width="3" height="18" rx="1"></rect>
+    <rect x="0" y="25" width="18" height="3" rx="1"></rect>
+  </g>
+
+  <!-- Knife -->
+  <g transform="translate(65, 30)" fill="#3b82f6">
+    <rect x="0" y="0" width="3" height="30" rx="1"></rect>
+    <path d="M0 0 L10 8 L10 12 L0 4 Z"></path>
+  </g>
+
+  <!-- Food Bite Point Indicator -->
+  <circle cx="50" cy="50" r="10" fill="#2563eb" opacity="0.8"></circle>
+
+  <!-- Bite mark -->
+  <path d="M42 50 Q50 42 58 50 Q50 58 42 50" fill="white"></path>
+</svg>
