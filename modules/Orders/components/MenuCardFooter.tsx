@@ -27,7 +27,7 @@ export default function MenuCardFooter() {
         {/* Clear Button */}
         <button
           onClick={resetItems}
-          className="flex items-center gap-1 px-6 py-3.5 bg-red-500 text-white text-[15px] font-medium rounded-lg shadow-sm transition active:scale-95 hover:bg-red-600"
+          className="flex items-center cursor-pointer duration-300 gap-1 px-6 py-3.5 bg-red-500 text-white text-[15px] font-medium rounded-lg shadow-sm transition active:scale-95 hover:bg-red-600"
           type="button"
         >
           <FaTrash className="text-xs" />
