@@ -19,7 +19,7 @@ export default function MenuCardFooter() {
 
   return (
     <div
-      className={` z-50 transition-all duration-300 ${
+      className={`cursor-pointer z-50 transition-all duration-300 ${
         isEmpty ? "translate-y-20 opacity-0" : "translate-y-0 opacity-100"
       }`}
     >

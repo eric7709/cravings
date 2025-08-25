@@ -25,26 +25,26 @@ export default function MenuItemCardQuantityTakeHome(menuItem: MenuItem) {
       <div
         className={`flex h-12 overflow-hidden items-center justify-between ${isSelected(items, menuItem.id) ? "flex-1" : "flex-[0]"}`}
       >
-        <div className="flex">
+        <div className="flex items-center">
           <div
             onClick={() => decreaseQuantity(menuItem.id)}
-            className="h-7 w-7 rounded-full border-2 grid place-content-center"
+            className="h-6 w-6 rounded-full border-red-500 border-2 grid place-content-center"
           >
-            <Minus size={15} />
+            <Minus size={13} />
           </div>
-          <div className="h-7 flex justify-center w-9">
+          <div className="h-6 text-[15px] items-center font-semibold flex justify-center w-9">
             <p>{selectedItem?.quantity}</p>
           </div>
           <div
             onClick={() => increaseQuantity(menuItem.id)}
-            className="h-7 w-7 rounded-full border-2 grid place-content-center"
+            className="h-6 w-6 border-green-500 rounded-full border-2 grid place-content-center"
           >
-            <Plus size={15} />
+            <Plus size={13} />
           </div>
         </div>
         <div
           onClick={() => toggleTakeHome(menuItem.id)}
-          className={`flex items-center gap-2 w-fit px-3 py-2  text-sm font-medium rounded-full cursor-pointer border duration-300 active:scale-90 ${selectedItem?.takeHome ? "bg-blue-500 text-white border-blue-900" : "bg-gray-300 text-black border-gray-400"}`}
+          className={`flex items-center text-[13px] gap-2 w-fit px-5  py-2  font-semibold rounded-full cursor-pointer border-2 duration-300 active:scale-90 ${selectedItem?.takeHome ? "bg-blue-500 text-white border-blue-900" : "bg-white text-black border-blue-300"}`}
         >
           <p>Take out</p>
         </div>

@@ -36,23 +36,23 @@ export default function MenuItemCartCard(item: OrderMenutItem) {
       <div className="flex items-center justify-between mt-2">
         <div
           onClick={() => toggleTakeHome(item.id)}
-          className={`flex active:scale-90 border duration-300 rounded-full  text-sm font-medium items-center gap-2  px-3 w-fit py-1.5 ${selectedItem?.takeHome ? "bg-blue-500 text-white border-blue-900" : "bg-gray-300 border-gray-400 text-black"}`}
+          className={`flex items-center text-[13px] gap-2 w-fit px-5  py-2  font-semibold rounded-full cursor-pointer border-2 duration-300 active:scale-90 ${selectedItem?.takeHome ? "bg-blue-500 text-white border-blue-900" : "bg-white text-black border-blue-300"}`}
         >
           <p>Take out</p>
         </div>
         <div className="flex items-center">
           <div
             onClick={() => decreaseQuantity(item.id)}
-            className="h-7 w-7 duration-300 active:scale-90 cursor-pointer rounded-full border-2 grid place-content-center"
+            className="h-6 w-6 border-red-500 duration-300 active:scale-90 cursor-pointer rounded-full border-2 grid place-content-center"
           >
-            <Minus size={15} />
+            <Minus size={13} />
           </div>
-          <div className="h-7 flex justify-center w-9">
+          <div className="h-6 text-[15px] items-center font-semibold flex justify-center w-8">
             <p>{selectedItem?.quantity}</p>
           </div>
           <div
             onClick={() => increaseQuantity(item.id)}
-            className="h-7 w-7 duration-300 active:scale-90 cursor-pointer rounded-full border-2 grid place-content-center"
+            className="h-6 w-6 border-green-500 duration-300 active:scale-90 cursor-pointer rounded-full border-2 grid place-content-center"
           >
             <Plus size={15} />
           </div>
