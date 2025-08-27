@@ -15,7 +15,7 @@ export default function MenuCartPage() {
   }, [items]);
   return (
     <div
-      className={`fixed h-screen flex flex-col duration-500 bg-white z-30 ${cartModalOpened ? "inset-y-0 inset-x-0 opacity-100 visible" : "-inset-y-7 inset-x-0 opacity-0 invisible"}`}
+      className={`fixed h-screen z-40 flex flex-col duration-500 bg-white z-30 ${cartModalOpened ? "inset-y-0 inset-x-0 opacity-100 visible" : "-inset-y-7 inset-x-0 opacity-0 invisible"}`}
     >
       <div className="flex border-b border-gray-300 p-4 items-center justify-between">
         <div className="flex items-center gap-3">
