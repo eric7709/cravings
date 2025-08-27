@@ -20,7 +20,7 @@ export default function MenuItemList() {
           <p className="text-center text-gray-500 mt-4">No items found.</p>
         ) : (
           filteredItems.map((menuItem) => (
-            <MenuItemCard menuItem={menuItem} key={menuItem.id} />
+            <MenuItemCard {...menuItem} key={menuItem.id} />
           ))
         )}
       </div>
