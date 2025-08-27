@@ -15,7 +15,7 @@ export default function MenuItemList() {
 
  
   return (
-    <div className="flex-1 p-4 flex flex-col overflow-y-auto">
+    <div className="p-4 flex flex-col overflow-y-auto">
       <div className="flex flex-col gap-5">
         {filteredItems.length === 0 ? (
           <p className="text-center text-gray-500 mt-4">No items found.</p>

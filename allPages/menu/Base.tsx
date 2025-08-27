@@ -52,7 +52,7 @@ export default function Base(props: Props) {
 
   return (
     <motion.div
-      className="h-screen fixed inset-0 flex flex-col"
+      className="inset-0 flex flex-col"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
@@ -64,7 +64,6 @@ export default function Base(props: Props) {
       <MenuDetailsModal />
       <MenuPageCategories />
       <MenuItemList />
-      <CreateOrderButton />
       <CreateCustomerModal />
     </motion.div>
   );

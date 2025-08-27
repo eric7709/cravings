@@ -8,6 +8,7 @@ import {
 } from "../types/orders";
 import { generateInvoiceId } from "../utils/generateInvoiceId";
 import { Employee } from "@/modules/Employees/types/employee";
+import { MenuItem } from "@/modules/MenuItems/types/menuItems";
 
 type GetAllOrdersParams = {
   page: number;
@@ -128,7 +129,23 @@ export class OrderService {
     }, 0);
     return total;
   }
-
+  static filterMenuItems(
+    menuItems: MenuItem[],
+    searchTerm: string,
+    selectedCategory: string
+  ): MenuItem[] {
+    return menuItems.filter((item) => {
+      const matchesText =
+        !searchTerm ||
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.description?.toLowerCase().includes(searchTerm.toLowerCase());
+      const itemCategoryName = item.category?.name?.toLowerCase() || "";
+      const matchesCategory =
+        selectedCategory === "all" ||
+        itemCategoryName === selectedCategory.toLowerCase();
+      return matchesText && matchesCategory;
+    });
+  }
   static async getAllOrders(params: GetAllOrdersParams) {
     const {
       page,

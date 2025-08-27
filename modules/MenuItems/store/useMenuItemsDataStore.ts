@@ -9,7 +9,7 @@ export const useMenuItemDataStore = create<MenuItemDataStore>((set, get) => ({
   isLoading: true,
   error: null,
   selectedCategory: null,
-  selectedAvailability: null, // 🆕 Added availability filter
+  selectedAvailability: null, 
   setMenuItems: (items) => set({ menuItems: items, error: null }),
   addMenuItem: (item) =>
     set((state) => ({
@@ -23,20 +23,17 @@ export const useMenuItemDataStore = create<MenuItemDataStore>((set, get) => ({
       ),
       error: null,
     })),
-
   removeMenuItem: (id) =>
     set((state) => ({
       menuItems: state.menuItems.filter((m) => m.id !== id),
       error: null,
     })),
-
   setSearchTerm: (term) => set({ searchTerm: term }),
   setLoading: (loading) => set({ isLoading: loading }),
   setSortBy: (field) => set({ sortBy: field }),
   setSortOrder: (order) => set({ sortOrder: order }),
   setSelectedCategory: (categoryId) => set({ selectedCategory: categoryId }),
   setSelectedAvailability: (status) => set({ selectedAvailability: status }), // 🆕 Setter
-
   filteredMenuItems: () => {
     const {
       menuItems,
@@ -44,10 +41,9 @@ export const useMenuItemDataStore = create<MenuItemDataStore>((set, get) => ({
       sortBy,
       sortOrder,
       selectedCategory,
-      selectedAvailability, // 🆕
+      selectedAvailability, 
     } = get();
     let result = [...menuItems];
-    // 📂 Category filter
     if (selectedCategory) {
       result = result.filter(
         (item) =>
@@ -55,8 +51,6 @@ export const useMenuItemDataStore = create<MenuItemDataStore>((set, get) => ({
           item.category?.id === selectedCategory
       );
     }
-
-    // ✅ Availability filter
     if (selectedAvailability) {
       if (selectedAvailability === "available") {
         result = result.filter((item) => item.isAvailable === true);
@@ -64,8 +58,6 @@ export const useMenuItemDataStore = create<MenuItemDataStore>((set, get) => ({
         result = result.filter((item) => item.isAvailable === false);
       }
     }
-
-    // 🔍 Search filter
     if (searchTerm.trim()) {
       const query = searchTerm.toLowerCase();
       result = result.filter(
@@ -74,7 +66,6 @@ export const useMenuItemDataStore = create<MenuItemDataStore>((set, get) => ({
           item.description?.toLowerCase().includes(query)
       );
     }
-    // ↕ Sort
     result.sort((a, b) => {
       const aValue = a[sortBy as keyof MenuItem];
       const bValue = b[sortBy as keyof MenuItem];

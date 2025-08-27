@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import { UseOrderSelectionStore } from "../types/orders";
 import { MenuItem } from "@/modules/MenuItems/types/menuItems";
+import { OrderService } from "../services/orderServices";
 
 export const useOrderSelectionStore = create<UseOrderSelectionStore>(
   (set, get) => ({
@@ -26,19 +27,8 @@ export const useOrderSelectionStore = create<UseOrderSelectionStore>(
     resetFields: () => set({ searchTerm: "", selectedCategory: "all" }),
     filterMenuItems: (menuItems: MenuItem[]) => {
       const { searchTerm, selectedCategory } = get();
-      return menuItems.filter((item) => {
-        const matchesText =
-          !searchTerm ||
-          item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.description?.toLowerCase().includes(searchTerm.toLowerCase());
-        const itemCategoryName = item.category?.name?.toLowerCase() || "";
-        const matchesCategory =
-          selectedCategory === "all" ||
-          itemCategoryName === selectedCategory.toLowerCase();
-        return matchesText && matchesCategory;
-      });
+      return OrderService.filterMenuItems(menuItems, searchTerm, selectedCategory)
     },
-
     // MODAL
     activeModal: null,
     setModal: (value) => set({ activeModal: value }),

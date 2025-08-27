@@ -19,7 +19,7 @@ export default function MenuCardFooter() {
 
   return (
     <div
-      className={`cursor-pointer z-50 transition-all duration-300 ${
+      className={`cursor-pointer fixed bottom-0 w-full left-0 z-50 transition-all duration-300 ${
         isEmpty ? "translate-y-20 opacity-0" : "translate-y-0 opacity-100"
       }`}
     >
@@ -33,7 +33,6 @@ export default function MenuCardFooter() {
           <FaTrash className="text-xs" />
           Clear
         </button>
-
         {/* Order Button */}
         <button
           onClick={handleSubmit}
