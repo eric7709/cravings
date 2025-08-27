@@ -10,20 +10,18 @@ export default function Dashboard() {
   const { drawerOpened, toggleDrawer, dashboardData, loading } = useDashboard();
   const [localLoading, setLocalLoading] = useState(true);
   useEffect(() => {
-    if (!loading) {
-      const timer = setTimeout(() => setLocalLoading(false), 300);
-      return () => clearTimeout(timer);
-    }
-  }, []);
+  if (!loading) {
+    const timer = setTimeout(() => setLocalLoading(false), 300);
+    return () => clearTimeout(timer);
+  }
+}, [loading]); 
+
 
   if (localLoading) {
     return (
       <div className="h-screen grid place-content-center">
         <div className="flex flex-col items-center">
           <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-t-4 border-b-4 border-blue-500 mb-2"></div>
-          <p className="text-gray-500 text-sm sm:text-base">
-            Loading dashboard...
-          </p>
         </div>
       </div>
     );

@@ -5,15 +5,14 @@ import { BsEye, BsEyeSlash } from "react-icons/bs";
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   error?: string;
-  inputClassName?: string; // added
-  labelClassName?: string; // added
+  inputClassName?: string;
+  labelClassName?: string; 
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ label, error, type = "text", className = "", inputClassName = "", labelClassName = "", ...props }, ref) => {
     const isPasswordField = type === "password";
     const [showPassword, setShowPassword] = useState(false);
-
     return (
       <div className={`w-full select-none ${className}`}>
         <label className={`block mb-1 text-sm text-gray-700 ${labelClassName}`}>
@@ -35,7 +34,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               ${inputClassName}
             `}
           />
-
           {isPasswordField && (
             <button
               type="button"
@@ -46,7 +44,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             </button>
           )}
         </div>
-
         {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
       </div>
     );

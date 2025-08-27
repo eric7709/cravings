@@ -6,7 +6,6 @@ import {
   PaymentMethod,
   UpdateOrder,
 } from "../types/orders";
-import { generateInvoiceId } from "../utils/generateInvoiceId";
 import { Employee } from "@/modules/Employees/types/employee";
 import { MenuItem } from "@/modules/MenuItems/types/menuItems";
 
@@ -400,10 +399,8 @@ export class OrderService {
       .from("orders")
       .select("id", { count: "exact", head: true })
       .not("status", "in", "(served,paid,cancelled)");
-
     if (dateFrom) query = query.gte("created_at", dateFrom);
     if (dateTo) query = query.lte("created_at", dateTo);
-
     const { count, error } = await query;
     if (error) throw new Error(error.message);
     return count ?? 0;
@@ -413,7 +410,6 @@ export class OrderService {
       .from("orders")
       .select("id", { count: "exact", head: true })
       .not("status", "in", "(paid,cancelled)");
-
     if (error) throw new Error(error.message);
     return count ?? 0;
   }

@@ -24,7 +24,6 @@ export default function CreateCustomerModal() {
           onSubmit={handleSubmit}
           className="w-full space-y-3 p-5 bg-gray-50 shadow-xl rounded-xl border border-gray-200"
         >
-          {/* Header with light gradient */}
           <div className="text-center pb-3 bg-gradient-to-r from-blue-50 to-blue-100 -mx-5 -mt-5 px-5 pt-4 rounded-t-xl">
             <h2 className="text-lg font-semibold text-blue-700">
               New Customer Profile
@@ -34,7 +33,6 @@ export default function CreateCustomerModal() {
               customer relationships better
             </p>
           </div>
-
           {/* Title */}
           <Select
             label="Title"
@@ -50,7 +48,6 @@ export default function CreateCustomerModal() {
               </option>
             ))}
           </Select>
-
           {/* Name */}
           <Input
             label="Name"
@@ -61,7 +58,6 @@ export default function CreateCustomerModal() {
             inputClassName="text-base placeholder:text-sm border-gray-300 focus:ring focus:ring-blue-200 focus:border-blue-400 rounded-md"
             labelClassName="text-sm font-medium text-gray-700"
           />
-
           {/* Email */}
           <Input
             label="Email"
@@ -85,7 +81,6 @@ export default function CreateCustomerModal() {
             inputClassName="text-base placeholder:text-sm border-gray-300 focus:ring focus:ring-blue-200 focus:border-blue-400 rounded-md"
             labelClassName="text-sm font-medium text-gray-700"
           />
-
           {/* Actions */}
           <div className="flex gap-2 pt-3">
             <button
