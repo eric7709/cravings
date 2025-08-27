@@ -5,7 +5,7 @@ import Logo from "@/components/Logo";
 export default function MenuPageHeader() {
   const { toggleCartModal, items } = useOrderSelectionStore();
   return (
-    <div className="flex sticky top-0 z-30 bg-white px-4 py-3 border-b border-gray-300 shadow mb-1 justify-between items-center">
+    <div className="flex  px-4 py-3 border-b border-gray-300 shadow mb-1 justify-between items-center">
       <Logo />
       <div
         onClick={toggleCartModal}

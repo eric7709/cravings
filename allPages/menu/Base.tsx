@@ -59,8 +59,10 @@ export default function Base(props: Props) {
     >
       <MenuCartPage />
       <OrderSummaryModal />
-      <MenuPageHeader />
-      <MenuPageSearch />
+      <div className="sticky bg-white z-30 top-0">
+        <MenuPageHeader />
+        <MenuPageSearch />
+      </div>
       <MenuDetailsModal />
       <MenuPageCategories />
       <MenuItemList />

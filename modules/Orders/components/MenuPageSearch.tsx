@@ -8,7 +8,7 @@ export default function MenuPageSearch() {
   const { searchTerm, changeSearchTerm, clearSearchTerm } = useOrderSelectionStore();
 
   return (
-    <div className="w-full sticky bg-white top-[65px] z-20 px-4 py-2">
+    <div className="w-full relative px-4 py-2">
       <BsSearch className="absolute top-1/2 left-8 -translate-y-1/2" />
       <input
         type="text"
